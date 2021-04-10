@@ -1,0 +1,71 @@
+<div class="container">
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+    <fieldset>
+      <legend>Ajout d'un étudiant</legend>
+      <div class="alert alert-dismissible alert-success" *ngIf="successMessage && studentForm.valid">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{ successMessage }}</strong>
+      </div>
+      <div class="alert alert-dismissible alert-danger" *ngIf="errorMessage && studentForm.valid">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{ errorMessage }}</strong>
+      </div>
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="firstname">First name</label>
+          <input type="text" class="form-control has-danger" id="firstname"
+                 formControlName="firstname"
+                 [ngClass]="{'is-invalid': formControls.firstname.touched && formControls.firstname.invalid}"
+                 placeholder="Enter first name">
+          <small class="form-text invalid-feedback"
+                 *ngIf="formControls.firstname.errors && formControls.firstname.errors.required">
+            This field is required
+          </small>
+        </div>
+
+        <div class="form-group col">
+          <label for="lastname">Last name</label>
+          <input type="text" class="form-control has-danger" id="lastname"
+                 formControlName="lastname"
+                 [ngClass]="{'is-invalid': formControls.lastname.touched && formControls.lastname.invalid}"
+                 placeholder="Enter last name">
+          <small class="form-text invalid-feedback"
+                 *ngIf="formControls.lastname.errors && formControls.lastname.errors.required">
+            This field is required
+          </small>
+        </div>
+      </div>
+      <div class="form-row mt-2">
+        <div class="form-group col">
+          <label for="email">Email</label>
+          <input type="email" class="form-control has-danger" id="email"
+                 formControlName="email"
+                 [ngClass]="{'is-invalid': formControls.email.touched && formControls.email.invalid}"
+                 placeholder="Enter email address">
+          <small class="form-text invalid-feedback"
+                 *ngIf="formControls.email.errors && formControls.email.errors.required">
+            This field is required
+          </small>
+          <small class="form-text invalid-feedback"
+                 *ngIf="formControls.email.errors && formControls.email.errors.email">
+            Invalid email address
+          </small>
+        </div>
+
+        <div class="form-group col">
+          <label for="school">School</label>
+          <input type="text" class="form-control has-danger" id="school"
+                 formControlName="school"
+                 [ngClass]="{'is-invalid': formControls.school.touched && formControls.school.invalid}"
+                 placeholder="Enter school name">
+          <small class="form-text invalid-feedback"
+                 *ngIf="formControls.school.errors && formControls.school.errors.required">
+            This field is required
+          </small>
+        </div>
+      </div>
+      <button type="button" class="btn btn-info mt-3" (click)="cancel()">Student list</button>
+      <button type="submit" class="btn btn-primary mt-3 ml-3" [disabled]="studentForm.invalid || loading">Save</button>
+    </fieldset>
+  </form>
+</div>
