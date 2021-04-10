@@ -4,14 +4,14 @@ services:
     restart: unless-stopped
     image: postgres:12-alpine
     environment:
-      POSTGRES_PASSWORD: demo
-      POSTGRES_USER: demo
-      POSTGRES_DB: demo
+      POSTGRES_PASSWORD: student
+      POSTGRES_USER: student
+      POSTGRES_DB: db_students
       PGDATA: /var/lib/postgresql/data/pgdata
       TZ: Africa/Douala
       PGTZ: Africa/Douala
     ports:
-      - 5454:5432
+      - 5433:5432
     volumes:
       - ./db-data/:/var/lib/postgresql/
       - ./var:/var/www/var
