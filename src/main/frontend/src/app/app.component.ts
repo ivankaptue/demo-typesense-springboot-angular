@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {AppService} from './app.service';
+import {StudentService} from './student.service';
+import {PageModel} from './page.model';
+import {StudentModel} from './student.model';
 
 @Component({
   selector: 'app-root',
@@ -7,19 +9,53 @@ import {AppService} from './app.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Demo Docker Compose';
-  text;
 
-  constructor(private appService: AppService) {
+  page = 1;
+  size = 10;
+
+  studentPage: PageModel<StudentModel>;
+  loading = false;
+
+  constructor(private studentService: StudentService) {
   }
 
   ngOnInit(): void {
-    this.appService.getHelloWorld().subscribe(
-      response => {
-        console.log(response);
-        this.text = response;
-      }
-    );
+    this.loadStudents();
+  }
+
+  previousPage(): void {
+    if (this.studentPage.first) {
+      return;
+    }
+    this.page = this.page - 1;
+    this.loadStudents();
+  }
+
+  nextPage(): void {
+    if (this.studentPage.last) {
+      return;
+    }
+    this.page = this.page + 1;
+    this.loadStudents();
+  }
+
+  changePerPage(event): void {
+    this.page = 1;
+    this.size = event.target.value;
+    this.loadStudents();
+  }
+
+  private loadStudents(): void {
+    this.loading = true;
+    this.studentService.findAll(this.page, this.size)
+      .subscribe(data => {
+          this.loading = false;
+          this.studentPage = data;
+        },
+        error => {
+          this.loading = false;
+          console.error(error);
+        });
   }
 
 }
