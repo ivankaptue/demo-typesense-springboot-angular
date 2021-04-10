@@ -13,7 +13,7 @@ public class HomeController {
 
     @GetMapping
     public String index() {
-        return "Hello world !";
+        return "Hello world";
     }
 
 }

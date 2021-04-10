@@ -15,21 +15,12 @@ services:
     volumes:
       - ./db-data/:/var/lib/postgresql/
       - ./var:/var/www/var
-  backend:
+  node:
     build:
-      context: ../
-      dockerfile: docker/backend/Dockerfile
-    restart: unless-stopped
+      context: ./node/
+    command: yarn run start
+    working_dir: /app
+    volumes:
+      - ../src/main/frontend:/app
     ports:
-      - 8080:8080
-    depends_on:
-      - db
-  frontend:
-    build:
-      context: ../
-      dockerfile: docker/frontend/Dockerfile
-    restart: unless-stopped
-    ports:
-      - 8000:80
-    depends_on:
-      - backend
+      - 4200:4200
