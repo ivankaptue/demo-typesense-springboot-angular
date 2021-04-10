@@ -43,3 +43,13 @@ services:
       - 8000:80
     depends_on:
       - backend
+  # Dev tools
+  node:
+    build:
+      context: ./node/
+    command: yarn run start
+    working_dir: /app
+    volumes:
+      - ../src/main/frontend:/app
+    ports:
+      - 4200:4200
