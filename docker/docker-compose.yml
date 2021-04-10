@@ -15,6 +15,7 @@ services:
     volumes:
       - ./db-data/:/var/lib/postgresql/
       - ./var:/var/www/var
+
   backend:
     build:
       context: ../
@@ -24,6 +25,7 @@ services:
       - 8080:8080
     depends_on:
       - db
+
   frontend:
     build:
       context: ../
@@ -33,3 +35,14 @@ services:
       - 8000:80
     depends_on:
       - backend
+
+  typesense:
+    restart: unless-stopped
+    image: typesense/typesense:0.18.0
+    environment:
+      TYPESENSE_DATA_DIR: /data
+      TYPESENSE_API_KEY: typesensekey
+    ports:
+      - 8108:8108
+    volumes:
+      - ./search-data:/data
