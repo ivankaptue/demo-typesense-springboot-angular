@@ -17,6 +17,7 @@ export class StudentUpdateComponent implements OnInit {
   errorMessage: string;
   id: number;
   actionUpdate = false;
+  title: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,6 +39,7 @@ export class StudentUpdateComponent implements OnInit {
     });
 
     if (this.actionUpdate) {
+      this.title = 'Update student';
       this.errorMessage = null;
       this.studentService.findById(this.id)
         .subscribe(student => {
@@ -52,6 +54,8 @@ export class StudentUpdateComponent implements OnInit {
             this.errorMessage = error.error;
           }
         });
+    } else {
+      this.title = 'Create student';
     }
   }
 
