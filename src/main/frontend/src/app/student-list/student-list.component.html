@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="page-header d-flex justify-content-end align-items-center">
-          <h3>Étudiants</h3>
+          <h3>Students List</h3>
           <button class="btn btn-primary ml-auto" routerLink="/students/create">Create</button>
         </div>
 
@@ -16,10 +16,10 @@
           <strong>{{ errorMessage }}</strong>
         </div>
 
-        <div class="w-100 text-nowrap mb-2">
-          <span>{{ studentPage.totalElements }} étudiants. Page {{ page }} sur {{ studentPage.totalPages }}</span>
+        <div class="w-100 text-nowrap mb-2" *ngIf="studentPage">
+          <span>{{ studentPage.totalElements }} students. Page {{ page }} of {{ studentPage.totalPages }}</span>
           <span class="ml-3">
-                <label>Nombre par page</label>
+                <label>Number per page</label>
                 <select class="ml-1"
                         (change)="changePerPage($event)">
                   <option value="10">10</option>

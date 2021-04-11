@@ -9,7 +9,7 @@ import {PageModel} from './page.model';
 })
 export class StudentService {
 
-  private readonly baseUrl = 'http://192.168.43.188:8080/students';
+  private readonly baseUrl = 'http://192.168.8.102:8080/students';
 
   constructor(private http: HttpClient) {
   }

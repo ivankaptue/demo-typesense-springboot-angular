@@ -1,9 +1,13 @@
 package com.klid.demodockercompose.service;
 
 import com.klid.demodockercompose.entity.Student;
+import com.klid.demodockercompose.event.StudentCreatedEvent;
+import com.klid.demodockercompose.event.StudentDeletedEvent;
+import com.klid.demodockercompose.event.StudentUpdatedEvent;
 import com.klid.demodockercompose.exception.StudentNotFoundException;
 import com.klid.demodockercompose.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +25,7 @@ import java.util.Objects;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final ApplicationEventPublisher publisher;
 
     /**
      * Create student
@@ -31,7 +36,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student create(Student student) {
         student.setId(null);
-        return studentRepository.save(student);
+        studentRepository.save(student);
+
+        publisher.publishEvent(new StudentCreatedEvent(student));
+
+        return student;
     }
 
     /**
@@ -56,6 +65,8 @@ public class StudentServiceImpl implements StudentService {
         s.setEmail(student.getEmail());
         s.setSchool(student.getSchool());
 
+        publisher.publishEvent(new StudentUpdatedEvent(s));
+
         return s;
     }
 
@@ -73,6 +84,8 @@ public class StudentServiceImpl implements StudentService {
         Student s = studentRepository.findById(id)
             .orElseThrow(() -> new StudentNotFoundException(String.format("Student with id %d not found", id)));
         studentRepository.delete(s);
+
+        publisher.publishEvent(new StudentDeletedEvent(id));
     }
 
     /**
