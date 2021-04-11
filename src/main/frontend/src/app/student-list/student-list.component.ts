@@ -10,6 +10,7 @@ import {StudentService} from '../student.service';
 })
 export class StudentListComponent implements OnInit {
 
+  query = '';
   page = 1;
   size = 10;
 
@@ -17,6 +18,7 @@ export class StudentListComponent implements OnInit {
   loading = false;
   successMessage: string;
   errorMessage: string;
+  searchTimeout: any;
 
   constructor(private studentService: StudentService) {
   }
@@ -61,9 +63,14 @@ export class StudentListComponent implements OnInit {
       })
   }
 
+  handleSearch(): void {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => this.loadStudents(), 200);
+  }
+
   private loadStudents(): void {
     this.loading = true;
-    this.studentService.findAll(this.page, this.size)
+    this.studentService.search(this.query, this.page, this.size)
       .subscribe(data => {
           this.loading = false;
           this.studentPage = data;

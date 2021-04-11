@@ -53,4 +53,14 @@ public interface StudentService {
      * @return list of students
      */
     Page<Student> findAll(int page, int size);
+
+    /**
+     * Search student from search engine
+     *
+     * @param query query
+     * @param page  page
+     * @param size  size per page
+     * @return found students
+     */
+    Page<Student> search(String query, int page, int size);
 }

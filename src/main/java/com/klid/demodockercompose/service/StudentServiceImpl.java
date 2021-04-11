@@ -6,14 +6,17 @@ import com.klid.demodockercompose.event.StudentDeletedEvent;
 import com.klid.demodockercompose.event.StudentUpdatedEvent;
 import com.klid.demodockercompose.exception.StudentNotFoundException;
 import com.klid.demodockercompose.repository.StudentRepository;
+import com.klid.demodockercompose.search.StudentSearchIndexer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -26,6 +29,7 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final ApplicationEventPublisher publisher;
+    private final StudentSearchIndexer indexer;
 
     /**
      * Create student
@@ -116,6 +120,19 @@ public class StudentServiceImpl implements StudentService {
     public Page<Student> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return studentRepository.findAll(pageable);
+    }
+
+    /**
+     * Search student from search engine
+     *
+     * @param query query
+     * @param page  page
+     * @param size  size per page
+     * @return found students
+     */
+    @Override
+    public Page<Student> search(String query, int page, int size) {
+        return indexer.search(query, page, size);
     }
 
 }

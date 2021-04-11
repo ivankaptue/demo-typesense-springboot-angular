@@ -58,7 +58,17 @@ public class StudentController {
         @RequestParam(value = "page", required = false, defaultValue = "1") int page,
         @RequestParam(value = "size", required = false, defaultValue = "10") int size
     ) {
-        var result = studentService.findAll(page -1, size);
+        var result = studentService.findAll(page - 1, size);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<Page<Student>> search(
+        @RequestParam(value = "q", required = false, defaultValue = "*") String query,
+        @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+        @RequestParam(value = "size", required = false, defaultValue = "10") int size
+    ) {
+        var result = studentService.search(query, page, size);
         return ResponseEntity.ok(result);
     }
 

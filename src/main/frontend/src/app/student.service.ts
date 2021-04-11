@@ -38,4 +38,13 @@ export class StudentService {
     return this.http.get<PageModel<StudentModel>>(this.baseUrl, {params});
   }
 
+  public search(query: string = '*', page: number = 1, size: number = 10): Observable<PageModel<StudentModel>> {
+    const url = `${this.baseUrl}/search`;
+    const params = (new HttpParams())
+      .set('q', query)
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageModel<StudentModel>>(url, {params});
+  }
+
 }
