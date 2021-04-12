@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @RequiredArgsConstructor
 @Service
-public class StudentTypesenseIndexer implements StudentSearchIndexer {
+public class TypesenseStudentIndexer implements StudentSearchIndexer {
 
     private static final String baseUrl = "http://localhost:8108/collections/";
     private static final String name = "students";
@@ -40,9 +40,7 @@ public class StudentTypesenseIndexer implements StudentSearchIndexer {
         String url = String.format("%s%s/documents?action=upsert", baseUrl, name);
         System.out.println(url);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-TYPESENSE-API-KEY", key);
+        HttpHeaders headers = buildHeader();
         HttpEntity<TypesenseStudentDocument> entity = new HttpEntity<>(document, headers);
 
         createCollection();
@@ -64,9 +62,7 @@ public class StudentTypesenseIndexer implements StudentSearchIndexer {
         String url = String.format("%s%s/documents/%s", baseUrl, name, id);
         System.out.println(url);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-TYPESENSE-API-KEY", key);
+        HttpHeaders headers = buildHeader();
         HttpEntity<TypesenseStudentDocument> entity = new HttpEntity<>(headers);
 
         try {
@@ -94,9 +90,7 @@ public class StudentTypesenseIndexer implements StudentSearchIndexer {
         );
         System.out.println(url);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-TYPESENSE-API-KEY", key);
+        HttpHeaders headers = buildHeader();
         HttpEntity<TypesenseCollectionModel> entity = new HttpEntity<>(headers);
 
         Map<String, Object> params = new HashMap<>();
@@ -147,9 +141,7 @@ public class StudentTypesenseIndexer implements StudentSearchIndexer {
         collectionModel.getFields().add(new TypesenseCollectionFieldModel("id_value", "int32", true));
         collectionModel.setDefault_sorting_field("id_value");
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-TYPESENSE-API-KEY", key);
+        HttpHeaders headers = buildHeader();
         HttpEntity<TypesenseCollectionModel> entity = new HttpEntity<>(collectionModel, headers);
 
         try {
@@ -162,6 +154,13 @@ public class StudentTypesenseIndexer implements StudentSearchIndexer {
             System.out.println(ex.getStatusText());
             System.out.println(ex.getMessage());
         }
+    }
+
+    private HttpHeaders buildHeader() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("X-TYPESENSE-API-KEY", key);
+        return headers;
     }
 
 }
